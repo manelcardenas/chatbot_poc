@@ -1,7 +1,7 @@
 [project]
 name = "chatbot-poc"
 version = "0.1.0"
-description = "Add your description here"
+description = "A proof of concept chatbot application"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -19,61 +19,19 @@ dev = [
     "ruff>=0.1.6",
 ]
 
+[tool.setuptools]
+package-dir = {"" = "."}
+packages = ["src"]
+
 # Ruff - fast linter and formatter
 [tool.ruff]
 line-length = 120
 target-version = "py311"
 
-# Linting configuration
-[tool.ruff.lint]
-# Select errors and warnings to enable
-select = [
-    # Code quality
-    "E",    # pycodestyle errors
-    "W",    # pycodestyle warnings
-    "F",    # pyflakes
-    "B",    # flake8-bugbear
-    "C4",   # flake8-comprehensions
-    "C90",  # Mccabe complexity
-    
-    # Code style
-    "I",    # isort
-    "N",    # PEP8 naming conventions
-    "D",    # pydocstyle
-    
-    # Static analysis
-    "S",    # flake8-bandit (security)
-    "ARG",  # flake8-unused-arguments
-    "SIM",  # flake8-simplify
-    
-    # Type checking
-    "ANN",  # type annotations
+lint.select = ["E", "F", "W", "I", "ANN", "UP"]
+lint.ignore = ["E501", "E203"]
+lint.exclude = [".venv", "__pycache__", ".git"]
 
-    # Modern Python
-    "UP",   # pyupgrade, updates code to latest Python version
-    "RUF",  # ruff-specific rules
-    "PT",   # pytest style
-    "ICN",  # import-cost
-]
-# Errors to ignore
-ignore = [
-    "C901",  # too complex (handled by mccabe)
-    "W191",  # indentation contains tabs
-    "D401",  # imperative mood
-    "E501",  # line too long (handled by line-length)
-    "D100",  # missing docstring in public module
-    "D104",  # missing docstring in private module
-]
-# Exclude files/directories
-exclude = [
-    ".git",
-    ".ruff_cache",
-    "__pycache__",
-    "build",
-    "dist",
-    "test",
-]
+# Code formatting
+[tool.ruff.format]
 
-# Pydocstyle settings
-[tool.ruff.lint.pydocstyle]
-convention = "google"

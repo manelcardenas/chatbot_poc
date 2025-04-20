@@ -39,27 +39,30 @@ def get_electricity_plans_data() -> list[tuple]:
             "Night Plan",
             "An electricity plan that provides significant cost savings for customers who consume most of their energy during off-peak nighttime hours. Ideal for night-shift workers and EV owners.",
             "Lower rates at night, great for electric vehicle charging, smart meter integration",
-        )
+        ),
     ]
 
 
 def populate_spending_events(conn: sqlite3.Connection) -> None:
     """Populate the spending_events table with sample data."""
     cursor = conn.cursor()
-    
+
     spending_events = get_spending_events_data()
-    
+
     try:
-        cursor.executemany("""
+        cursor.executemany(
+            """
         INSERT INTO spending_events (
-            customer_id, 
-            plan_name, 
-            billing_start, 
-            billing_end, 
-            amount_due)  
+            customer_id,
+            plan_name,
+            billing_start,
+            billing_end,
+            amount_due)
         VALUES (?, ?, ?, ?, ?)
-        """, spending_events)
-        
+        """,
+            spending_events,
+        )
+
         conn.commit()
         print(f"Added {len(spending_events)} spending events")
     except sqlite3.Error as e:
@@ -70,19 +73,22 @@ def populate_spending_events(conn: sqlite3.Connection) -> None:
 def populate_electricity_plans(conn: sqlite3.Connection) -> None:
     """Populate the electricity_plans table with sample data."""
     cursor = conn.cursor()
-    
+
     electricity_plans = get_electricity_plans_data()
-    
+
     try:
-        cursor.executemany("""
+        cursor.executemany(
+            """
         INSERT INTO electricity_plans (
-            plan_id, 
-            plan_name, 
-            plan_description, 
-            selling_points)  
+            plan_id,
+            plan_name,
+            plan_description,
+            selling_points)
         VALUES (?, ?, ?, ?)
-        """, electricity_plans)
-        
+        """,
+            electricity_plans,
+        )
+
         conn.commit()
         print(f"Added {len(electricity_plans)} electricity plans")
     except sqlite3.Error as e:
@@ -93,7 +99,7 @@ def populate_electricity_plans(conn: sqlite3.Connection) -> None:
 def populate_all_tables(connection: sqlite3.Connection) -> None:
     """Populate all tables with sample data."""
     populate_spending_events(conn=connection)
-    populate_electricity_plans(conn==connection)
+    populate_electricity_plans(conn == connection)
     # Add calls to populate other tables here
 
 
@@ -102,4 +108,4 @@ if __name__ == "__main__":
     conn = sqlite3.connect(database="demo.db")
     populate_all_tables(connection=conn)
     conn.close()
-    print("Sample data populated successfully!") 
+    print("Sample data populated successfully!")

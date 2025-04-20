@@ -4,7 +4,7 @@ import sqlite3
 def create_spending_events_table(connection: sqlite3.Connection) -> None:
     """Create the spending_events table if it doesn't exist."""
     cursor = connection.cursor()
-    
+
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS spending_events (
         event_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,14 +15,14 @@ def create_spending_events_table(connection: sqlite3.Connection) -> None:
         amount_due REAL
     )
     """)
-    
+
     conn.commit()
 
 
 def create_electricity_plans_table(connection: sqlite3.Connection) -> None:
     """Create the electricity_plans table if it doesn't exist."""
     cursor = connection.cursor()
-    
+
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS electricity_plans (
         plan_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +31,7 @@ def create_electricity_plans_table(connection: sqlite3.Connection) -> None:
         selling_points TEXT NOT NULL
     )
     """)
-    
+
     conn.commit()
 
 
@@ -40,8 +40,8 @@ def create_all_tables(conn: sqlite3.Connection) -> None:
     create_spending_events_table(connection=conn)
     create_electricity_plans_table(connection=conn)
     # Add calls to create other tables here
-    
-    
+
+
 def init_database(db_path: str) -> sqlite3.Connection:
     """Initialize the database with all required tables."""
     try:
@@ -58,4 +58,4 @@ if __name__ == "__main__":
     conn = init_database(db_path="demo.db")
     if conn:
         print("Database schema created successfully!")
-        conn.close() 
+        conn.close()

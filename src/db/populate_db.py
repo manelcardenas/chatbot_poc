@@ -1,13 +1,13 @@
 import sqlite3
 
-from db_schema import init_database
 from data_generators import populate_all_tables
+from db_schema import init_database
 
 # Database configurations
 DB_NAME = "demo.db"
 
 
-def populate_database():
+def populate_database() -> None:
     """Main function to populate the demo database."""
     try:
         # Initialize database with schema
@@ -15,10 +15,10 @@ def populate_database():
         if not conn:
             print("Failed to initialize database")
             return
-            
+
         # Populate with sample data
         populate_all_tables(conn=conn)
-        
+
         print("Database successfully populated!")
     except sqlite3.Error as e:
         print(f"Database error: {e}")
