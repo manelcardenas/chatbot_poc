@@ -7,6 +7,7 @@ DB_PATH = "demo.db"
 
 def get_db_connection() -> None:
     """Creates and returns a database connection."""
+    # TODO: This does not go here. Move it in the future
     try:
         conn = sqlite3.connect(DB_PATH)
         return conn
