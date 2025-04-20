@@ -43,7 +43,7 @@ This project provides a simple chatbot proof of concept using LangChain and Open
    uv pip install -e .
    
    # Or using pip
-   pip install -e ".[dev]"
+   pip install -e .
    ```
 
 ## Usage
@@ -52,4 +52,27 @@ Run the application:
 
 ```
 python main.py
+```
+
+## Development
+
+### Install Development Dependencies
+
+For development, install with the dev extras to include Ruff:
+
+```
+pip install -e ".[dev]"
+```
+or 
+```
+uv pip install -e ".[dev]"
+```
+
+### Linting
+
+The project uses Ruff for linting and formatting:
+
+```
+ruff check .   # Run linting
+ruff format .  # Run formatting
 ```

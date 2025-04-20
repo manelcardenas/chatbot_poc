@@ -10,7 +10,7 @@ source .venv/bin/activate
 if command -v uv &> /dev/null; then
     uv pip install -e .
 else
-    pip install -e ".[dev]"
+    pip install -e .
 fi
 
 echo "Setup complete. Activate the virtual environment with 'source .venv/bin/activate'" 
