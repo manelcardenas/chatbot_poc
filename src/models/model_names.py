@@ -8,6 +8,7 @@ class ModelProvider(Enum):
     DEEPSEEK = "deepseek"
     ANTHROPIC = "anthropic"
     OLLAMA = "ollama"
+    GEMINI = "google-genai"
 
 
 class ModelName(Enum):

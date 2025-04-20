@@ -5,7 +5,7 @@ from langchain.callbacks.tracers.langchain import LangChainTracer
 from langchain_anthropic import ChatAnthropic
 from langchain_core.language_models import BaseChatModel
 from langchain_deepseek import ChatDeepSeek
-from langchain_google_gemini import ChatGoogleGenerativeAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
 
