@@ -1,7 +1,7 @@
 import sqlite3
 
-from data_generators import populate_all_tables
-from db_schema import init_database
+from src.db.data_generators import populate_all_tables
+from src.db.db_schema import init_database
 
 # Database configurations
 DB_NAME = "demo.db"

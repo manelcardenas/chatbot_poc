@@ -99,7 +99,7 @@ def populate_electricity_plans(conn: sqlite3.Connection) -> None:
 def populate_all_tables(connection: sqlite3.Connection) -> None:
     """Populate all tables with sample data."""
     populate_spending_events(conn=connection)
-    populate_electricity_plans(conn == connection)
+    populate_electricity_plans(conn=connection)
     # Add calls to populate other tables here
 
 

@@ -16,7 +16,7 @@ def create_spending_events_table(connection: sqlite3.Connection) -> None:
     )
     """)
 
-    conn.commit()
+    connection.commit()
 
 
 def create_electricity_plans_table(connection: sqlite3.Connection) -> None:
@@ -32,7 +32,7 @@ def create_electricity_plans_table(connection: sqlite3.Connection) -> None:
     )
     """)
 
-    conn.commit()
+    connection.commit()
 
 
 def create_all_tables(conn: sqlite3.Connection) -> None:

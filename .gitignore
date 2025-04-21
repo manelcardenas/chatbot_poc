@@ -11,3 +11,9 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Database
+demo.db
+
+# Checkpoints
+checkpoints/
