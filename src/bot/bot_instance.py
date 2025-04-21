@@ -2,7 +2,7 @@ from langchain_core.runnables import Runnable, RunnableConfig
 from langgraph.graph import END
 from langgraph.prebuilt import tools_condition
 
-from src.core.state import ChatbotState
+from src.core.state import State
 from src.tools import CompleteOrEscalate
 
 
@@ -14,7 +14,7 @@ class Assistant:
         self.name = name
         self.tools = tools
 
-    def __call__(self, state: ChatbotState, config: RunnableConfig) -> dict:
+    def __call__(self, state: State, config: RunnableConfig) -> dict:
         while True:
             result = self.runnable.invoke(state)
 
@@ -27,7 +27,7 @@ class Assistant:
                 break
         return {"messages": result}
 
-    def route_non_primary_assistants(self, state: ChatbotState) -> str:
+    def route_non_primary_assistants(self, state: State) -> str:
         route = tools_condition(state)
         if route == END:
             return END

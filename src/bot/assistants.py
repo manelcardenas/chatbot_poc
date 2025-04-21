@@ -4,7 +4,7 @@ from langgraph.prebuilt import tools_condition
 
 from src.bot.bot_instance import Assistant
 from src.core.prompts import primary_prompt, recommendation_prompt, spending_prompt
-from src.core.state import ChatbotState
+from src.core.state import State
 from src.tools import (
     CompleteOrEscalate,
     ToRecommendationAssistant,
@@ -41,7 +41,7 @@ class PrimaryAssistant(Assistant):
         runnable = primary_prompt | llm.bind_tools(tools)
         super().__init__(runnable=runnable, name=name, tools=tools)
 
-    def route_primary_assistant(self, state: ChatbotState) -> str:
+    def route_primary_assistant(self, state: State) -> str:
         route = tools_condition(state)
         if route == END:
             return END
