@@ -7,6 +7,8 @@ from langchain_core.messages import HumanMessage
 from src.core.chatbot import ChatBot
 from src.core.graph import ckpnt_to_dict
 
+# TODO: Add UI (Streamlit or Gradio)
+
 if __name__ == "__main__":
     init(autoreset=True)
 

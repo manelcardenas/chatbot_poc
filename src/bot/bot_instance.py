@@ -32,6 +32,7 @@ class Assistant:
         if route == END:
             return END
         tool_calls = state["messages"][-1].tool_calls
+        # Check if last message is a call to CompleteOrEscalate
         did_cancel = any(tc["name"] == CompleteOrEscalate.__name__ for tc in tool_calls)
         if did_cancel:
             return "leave_skill"
