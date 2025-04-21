@@ -39,7 +39,6 @@ def create_all_tables(conn: sqlite3.Connection) -> None:
     """Create all tables for the application."""
     create_spending_events_table(connection=conn)
     create_electricity_plans_table(connection=conn)
-    # Add calls to create other tables here
 
 
 def init_database(db_path: str) -> sqlite3.Connection:
@@ -51,11 +50,3 @@ def init_database(db_path: str) -> sqlite3.Connection:
     except sqlite3.Error as e:
         print(f"Database initialization error: {e}")
         raise
-
-
-if __name__ == "__main__":
-    # This allows running this module directly to just create the schema
-    conn = init_database(db_path="demo.db")
-    if conn:
-        print("Database schema created successfully!")
-        conn.close()

@@ -4,7 +4,7 @@ from src.db.data_generators import populate_all_tables
 from src.db.db_schema import init_database
 
 # Database configurations
-DB_NAME = "demo.db"
+DB_NAME = "data.db"
 
 
 def populate_database() -> None:
@@ -17,7 +17,7 @@ def populate_database() -> None:
             return
 
         # Populate with sample data
-        populate_all_tables(conn=conn)
+        populate_all_tables(connection=conn)
 
         print("Database successfully populated!")
     except sqlite3.Error as e:

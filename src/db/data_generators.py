@@ -100,12 +100,3 @@ def populate_all_tables(connection: sqlite3.Connection) -> None:
     """Populate all tables with sample data."""
     populate_spending_events(conn=connection)
     populate_electricity_plans(conn=connection)
-    # Add calls to populate other tables here
-
-
-if __name__ == "__main__":
-    # This allows running this module directly to just populate the data
-    conn = sqlite3.connect(database="demo.db")
-    populate_all_tables(connection=conn)
-    conn.close()
-    print("Sample data populated successfully!")

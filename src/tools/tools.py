@@ -2,7 +2,7 @@ import sqlite3
 
 from langchain_core.tools import tool
 
-DB_PATH = "demo.db"
+DB_PATH = "data.db"
 
 
 def get_db_connection() -> None:

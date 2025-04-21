@@ -13,7 +13,7 @@ wheels/
 .venv
 
 # Database
-demo.db
+data.db
 
 # Checkpoints
 checkpoints/
