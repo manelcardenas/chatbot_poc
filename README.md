@@ -43,9 +43,6 @@ This project provides a simple chatbot proof of concept using LangChain and Open
    python -m venv .venv
    source .venv/bin/activate
    
-   # Using uv (recommended)
-   uv pip install -e .
-   
    # Or using pip
    pip install -e .
    ```
@@ -55,22 +52,14 @@ This project provides a simple chatbot proof of concept using LangChain and Open
 Run the application:
 
 ```
+uv run -m src.main
+```
+or
+```
 python -m src.main
 ```
 
 ## Development
-
-### Install Development Dependencies
-
-For development, install with the dev extras to include Ruff:
-
-```
-pip install -e ".[dev]"
-```
-or 
-```
-uv pip install -e ".[dev]"
-```
 
 ### Linting
 

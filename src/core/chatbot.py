@@ -2,6 +2,7 @@ import logging
 import os
 import uuid
 
+import dotenv
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 
@@ -12,6 +13,8 @@ from src.core.state import State
 from src.models import ModelFactory, ModelName, ModelProvider
 
 logger = logging.getLogger(__name__)
+
+dotenv.load_dotenv()
 
 
 class ChatBot:

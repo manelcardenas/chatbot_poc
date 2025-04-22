@@ -8,7 +8,9 @@ source .venv/bin/activate
 
 # Install dependencies
 if command -v uv &> /dev/null; then
-    uv pip install -e .
+    uv lock
+    uv add -e .
+    uv sync
 else
     pip install -e .
 fi
