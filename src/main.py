@@ -2,10 +2,9 @@ import json
 import os
 
 from colorama import Fore, init
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage
 
 from src.core.chatbot import ChatBot
-from src.core.graph import ckpnt_to_dict
 
 # TODO: Add UI (Streamlit or Gradio)
 
@@ -31,19 +30,49 @@ if __name__ == "__main__":
                 print("-" * 50)
                 print(Fore.LIGHTMAGENTA_EX + f"Internal graph message: {s}")
 
+        # Get the checkpoint data
         checkpoint = chatbot.checkpoint_saver.get(chatbot.config)
-        id = checkpoint["ts"].split(".")[0]
-        id = id.replace(":", "-")  # windows does not allow colons in file names
-        chatbot.checkpoint_file = os.path.join("checkpoints", f"{id}.json")
-        checkpoint_dict = ckpnt_to_dict(checkpoint)
-        checkpoint_data = json.dumps(checkpoint_dict, ensure_ascii=False)
+        timestamp = checkpoint["ts"].split(".")[0]
+        timestamp = timestamp.replace(":", "-")  # windows does not allow colons in file names
 
+        # Create a simple, human-readable checkpoint format
+        readable_checkpoint = {"thread_id": chatbot.thread_id, "timestamp": timestamp, "conversation": []}
+
+        # Extract just the messages in a clean format
+        if "messages" in checkpoint["channel_values"]:
+            messages = checkpoint["channel_values"]["messages"]
+            for msg in messages:
+                # Check the type of message object and handle accordingly
+                if isinstance(msg, HumanMessage):
+                    role = "user"
+                    content = msg.content
+                elif isinstance(msg, AIMessage):
+                    role = "assistant"
+                    content = msg.content
+                elif isinstance(msg, dict):
+                    # Fallback for dictionary-style messages
+                    msg_type = msg.get("type", "")
+                    role = "user" if msg_type == "HumanMessage" else "assistant"
+                    content = msg.get("content", "")
+                else:
+                    # Last resort fallback
+                    role = "unknown"
+                    content = str(msg)
+
+                readable_checkpoint["conversation"].append({"role": role, "content": content})
+
+        # Save to file with nice formatting
+        chatbot.checkpoint_file = os.path.join("checkpoints", f"{timestamp}.json")
         with open(chatbot.checkpoint_file, "w", encoding="utf-8") as f:
-            json.dump(checkpoint_dict, f, ensure_ascii=False)
+            json.dump(readable_checkpoint, f, ensure_ascii=False, indent=2)
 
-        bot_reply = chatbot.graph.get_state(config=chatbot.config).values["messages"][-1].content
-        print("\n")
-        print("-" * 50)
-        print(Fore.CYAN + f"Chatbot: {bot_reply}")
-        print("-" * 50)
-        print("\n")
+        try:
+            bot_reply = chatbot.graph.get_state(config=chatbot.config).values["messages"][-1].content
+            print("\n")
+            print("-" * 50)
+            print(Fore.CYAN + f"Chatbot: {bot_reply}")
+            print("-" * 50)
+            print("\n")
+        except Exception as e:
+            print(f"Error getting bot reply: {e}")
+            print("Continuing conversation...")

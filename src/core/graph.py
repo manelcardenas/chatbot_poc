@@ -1,9 +1,7 @@
 from collections.abc import Callable
-from copy import deepcopy
 from typing import Literal, TypedDict
 
 from langchain_core.messages import ToolMessage
-from langgraph.checkpoint.memory import BaseCheckpointSaver
 
 
 def pop_dialog_state(state: dict) -> dict:
@@ -59,19 +57,19 @@ def route_to_workflow(
     return dialog_state[-1]
 
 
-def ckpnt_to_dict(checkpoint: BaseCheckpointSaver) -> dict:
-    """Converts a checkpoint to a JSON-compliant dictionary."""
-    checkpoint_copy = deepcopy(checkpoint)
+# def ckpnt_to_dict(checkpoint: BaseCheckpointSaver) -> dict:
+#     """Converts a checkpoint to a JSON-compliant dictionary."""
+#     checkpoint_copy = deepcopy(checkpoint)
 
-    # Extract messages and transform them
-    checkpoint_copy["channel_values"]["messages"] = [
-        {
-            "type": type(m).__name__,
-            "content": m.content,
-            "name": m.name,
-            "id": m.id,
-        }
-        for m in checkpoint["channel_values"]["messages"]
-    ]
+#     # Extract messages and transform them
+#     checkpoint_copy["channel_values"]["messages"] = [
+#         {
+#             "type": type(m).__name__,
+#             "content": m.content,
+#             "name": m.name,
+#             "id": m.id,
+#         }
+#         for m in checkpoint["channel_values"]["messages"]
+#     ]
 
-    return checkpoint_copy
+#     return checkpoint_copy
