@@ -24,6 +24,10 @@ class CompleteOrEscalate(BaseModel):
                     "reason": "I have fully completed the task.",
                 },
                 {
+                    "cancel": True,
+                    "reason": "User needs billing information, need to switch to spending assistant.",
+                },
+                {
                     "cancel": False,
                     "reason": "I can try searching in another database.",
                 },
