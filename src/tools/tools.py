@@ -26,6 +26,7 @@ def fetch_spending_events(customer_id: int = 1, months: int = None, plan_name: s
     Returns:
         A formatted string with the spending events information
     """
+    # TODO: Add restriction so the user can only see their own data (customer_id)
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
