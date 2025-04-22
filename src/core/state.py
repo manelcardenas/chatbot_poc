@@ -15,9 +15,10 @@ def update_dialog_stack(left: list[str], right: str | None) -> list[str]:
     return left + [right]
 
 
-class State(TypedDict):
+class State(TypedDict, total=False):
     messages: Annotated[list[AnyMessage], add_messages]
     user_info: str
+    customer_id: int | None
     dialog_state: Annotated[
         list[Literal["primary", "spending", "recommendation"]],
         update_dialog_stack,

@@ -14,7 +14,10 @@ if __name__ == "__main__":
     chatbot = ChatBot()
     chatbot.build_graph()
 
-    print("Chatbot initialized. Type 'exit' to end the chat.")
+    print("\n=== Welcome to the Electricity Chatbot ===\n")
+    print("You can ask about your electricity bills or get plan recommendations.")
+    print("For billing inquiries, you'll need to identify yourself with your customer ID or email.")
+    print("\nChatbot initialized. Type 'exit' to end the chat.")
 
     while True:
         user_input = input("User: ")
@@ -37,6 +40,11 @@ if __name__ == "__main__":
 
         # Create a simple, human-readable checkpoint format
         readable_checkpoint = {"thread_id": chatbot.thread_id, "timestamp": timestamp, "conversation": []}
+
+        # Get customer_id if available in state
+        state = chatbot.graph.get_state(config=chatbot.config)
+        if "customer_id" in state.values:
+            readable_checkpoint["customer_id"] = state.values["customer_id"]
 
         # Extract just the messages in a clean format
         if "messages" in checkpoint["channel_values"]:

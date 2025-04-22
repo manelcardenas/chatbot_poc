@@ -16,18 +16,20 @@ def get_db_connection() -> None:
 
 
 @tool
-def fetch_spending_events(customer_id: int = 1, months: int = None, plan_name: str = None) -> str:
+def fetch_spending_events(customer_id: int, months: int = None, plan_name: str = None) -> str:
     """
     Fetches spending events for a customer with optional filtering by months or plan.
+    Note: customer_id will be auto-filled if customer has been validated.
     Args:
-        customer_id: The ID of the customer (defaults to 1)
+        customer_id: The ID of the customer (will be auto-filled if validation has occurred)
         months: Optional number of most recent months to retrieve
         plan_name: Optional plan name to filter by
     Returns:
         A formatted string with the spending events information
     """
-    # TODO: Add restriction so the user can only see their own data (customer_id).
-    # TODO: this customer_id can be tracked using cache instead of making the llm obtain it every time.
+    if not customer_id:
+        return "Error: Customer must be validated before accessing spending data."
+
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -130,6 +132,65 @@ def fetch_plan_information(plan_name: str) -> str:
 
     except sqlite3.Error as e:
         return f"Database error: {e}"
+    finally:
+        if conn:
+            conn.close()
+
+
+@tool
+def validate_customer(customer_id: int = None, email: str = None) -> dict:
+    """
+    Validates if a customer exists by ID or email and returns customer information.
+    Args:
+        customer_id: The ID of the customer to look up (optional)
+        email: The email of the customer to look up (optional)
+    Returns:
+        A dictionary with validation result and customer info if found
+    """
+    if customer_id is None and email is None:
+        return {
+            "valid": False,
+            "message": "Either customer_id or email must be provided",
+            "customer_id": None,
+            "customer_info": None,
+        }
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        if customer_id is not None:
+            cursor.execute("SELECT * FROM customers WHERE customer_id = ?", (customer_id,))
+        else:
+            cursor.execute("SELECT * FROM customers WHERE email = ?", (email,))
+
+        result = cursor.fetchone()
+
+        if not result:
+            return {
+                "valid": False,
+                "message": "No customer found with the provided information",
+                "customer_id": None,
+                "customer_info": None,
+            }
+
+        # Get column names for better formatting
+        column_names = [description[0] for description in cursor.description]
+
+        # Create a dictionary with customer info
+        customer_info = {}
+        for i, value in enumerate(result):
+            customer_info[column_names[i]] = value
+
+        return {
+            "valid": True,
+            "message": "Customer found",
+            "customer_id": customer_info["customer_id"],
+            "customer_info": customer_info,
+        }
+
+    except sqlite3.Error as e:
+        return {"valid": False, "message": f"Database error: {e}", "customer_id": None, "customer_info": None}
     finally:
         if conn:
             conn.close()

@@ -1,4 +1,4 @@
-from langchain_core.runnables import Runnable
+from langchain_core.runnables import Runnable, RunnableConfig
 from langgraph.graph import END
 from langgraph.prebuilt import tools_condition
 
@@ -12,6 +12,7 @@ from src.tools import (
     fetch_plan_information,
     fetch_spending_events,
     list_supported_plans,
+    validate_customer,
 )
 
 
@@ -19,9 +20,35 @@ class SpendingAssistant(Assistant):
     """Spending/billing assistant class."""
 
     def __init__(self, llm: Runnable, name: str = "spending_assistant") -> None:
-        tools = [fetch_spending_events, CompleteOrEscalate]
+        tools = [fetch_spending_events, validate_customer, CompleteOrEscalate]
         runnable = spending_prompt | llm.bind_tools(tools)
         super().__init__(runnable=runnable, name=name, tools=tools)
+
+    def __call__(self, state: State, config: RunnableConfig = None) -> dict:
+        """Process the state and manage customer validation."""
+        # Call the original method from the parent class
+        result = super().__call__(state, config=config)
+
+        # Update state if customer was validated in this interaction
+        if "messages" in result and result["messages"].tool_calls:
+            last_message = result["messages"]
+            for tool_call in last_message.tool_calls:
+                # Check for customer validation tool call
+                if tool_call.get("name") == "validate_customer":
+                    if "output" in tool_call and isinstance(tool_call["output"], dict):
+                        output = tool_call["output"]
+                        if output.get("valid") and output.get("customer_id"):
+                            # Update state with validated customer_id
+                            state["customer_id"] = output["customer_id"]
+
+                # Handle fetch_spending_events tool call - inject customer_id if validation has been done
+                if tool_call.get("name") == "fetch_spending_events" and state.get("customer_id"):
+                    # If args doesn't contain customer_id, add it from state
+                    if "args" in tool_call and isinstance(tool_call["args"], dict):
+                        if "customer_id" not in tool_call["args"]:
+                            tool_call["args"]["customer_id"] = state["customer_id"]
+
+        return result
 
 
 class RecommendationAssistant(Assistant):
