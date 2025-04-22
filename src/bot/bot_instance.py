@@ -16,7 +16,7 @@ class Assistant:
 
     def __call__(self, state: State, config: RunnableConfig) -> dict:
         while True:
-            result = self.runnable.invoke(state)
+            result = self.runnable.invoke(state, config=config)
 
             if not result.tool_calls and (
                 not result.content or isinstance(result.content, list) and not result.content[0].get("text")

@@ -1,4 +1,6 @@
+import logging
 import os
+import uuid
 
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
@@ -9,15 +11,24 @@ from src.core.graph import create_entry_node, pop_dialog_state, route_to_workflo
 from src.core.state import State
 from src.models import ModelFactory, ModelName, ModelProvider
 
+logger = logging.getLogger(__name__)
+
 
 class ChatBot:
     def __init__(self) -> None:
         self.llm = ModelFactory().get_model(ModelProvider.OPENAI, ModelName.GPT_4O_MINI)
         self.checkpoint_saver = MemorySaver()
-        self.config = {"configurable": {"thread_id": 0}}  # TODO: Change so thread_id is dynamic
+        self.thread_id = self.create_thread_id()
+        self.config = {"configurable": {"thread_id": self.thread_id}}
 
         if not os.path.exists("checkpoints"):
             os.makedirs("checkpoints")
+
+    def create_thread_id(self) -> str:
+        """Create a new thread ID for conversation persistence."""
+        thread_id = str(uuid.uuid4())
+        logger.info(f"Created new thread ID: {thread_id}")
+        return thread_id
 
     def build_graph(self) -> None:
         # ---- Define the various assistants of the chatbot ----
