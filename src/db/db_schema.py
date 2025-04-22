@@ -12,7 +12,8 @@ def create_spending_events_table(connection: sqlite3.Connection) -> None:
         plan_name TEXT NOT NULL,
         billing_start DATE NOT NULL,
         billing_end DATE NOT NULL,
-        amount_due REAL
+        amount_due REAL,
+        FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
     )
     """)
 
@@ -35,8 +36,24 @@ def create_electricity_plans_table(connection: sqlite3.Connection) -> None:
     connection.commit()
 
 
+def create_customers_table(connection: sqlite3.Connection) -> None:
+    """Create the customers table if it doesn't exist."""
+    cursor = connection.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS customers (
+        customer_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE
+    )
+    """)
+
+    connection.commit()
+
+
 def create_all_tables(conn: sqlite3.Connection) -> None:
     """Create all tables for the application."""
+    create_customers_table(connection=conn)
     create_spending_events_table(connection=conn)
     create_electricity_plans_table(connection=conn)
 

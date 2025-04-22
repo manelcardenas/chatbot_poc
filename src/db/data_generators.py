@@ -1,22 +1,49 @@
 import sqlite3
 
 
+def get_customers_data() -> list[tuple]:
+    """Generate sample customer data."""
+    return [
+        (1, "Alice Johnson", "alice.johnson@example.com"),
+        (2, "Bob Smith", "bob.smith@example.com"),
+    ]
+
+
 def get_spending_events_data() -> list[tuple]:
     """Generate sample spending events data."""
-    return [
+    # Customer 1 data
+    customer1_data = [
         (1, "Standard Plan", "2024-01-01", "2024-01-31", 50.00),
-        (1, "Standard Plan", "2024-02-01", "2024-02-29", 55.00),
-        (1, "Standard Plan", "2024-03-01", "2024-03-31", 53.00),
-        (1, "Standard Plan", "2024-04-01", "2024-04-30", 52.00),
+        (1, "Night Plan", "2024-02-01", "2024-02-29", 30.00),
+        (1, "Night Plan", "2024-03-01", "2024-03-31", 35.00),
+        (1, "Night Plan", "2024-04-01", "2024-04-30", 32.00),
         (1, "Standard Plan", "2024-05-01", "2024-05-31", 54.00),
         (1, "Standard Plan", "2024-06-01", "2024-06-30", 56.00),
-        (1, "Eco Plan", "2024-07-01", "2024-07-31", 58.00),
-        (1, "Eco Plan", "2024-08-01", "2024-08-31", 57.00),
-        (1, "Eco Plan", "2024-09-01", "2024-09-30", 59.00),
-        (1, "Standard Plan", "2024-10-01", "2024-10-31", 60.00),
-        (1, "Standard Plan", "2024-11-01", "2024-11-30", 62.00),
-        (1, "Standard Plan", "2024-12-01", "2024-12-31", 63.00),
+        (1, "Standard Plan", "2024-07-01", "2024-07-31", 57.00),
+        (1, "Standard Plan", "2024-08-01", "2024-08-31", 58.00),
+        (1, "Standard Plan", "2024-09-01", "2024-09-30", 70.00),
+        (1, "Standard Plan", "2024-10-01", "2024-10-31", 65.00),
+        (1, "Standard Plan", "2024-11-01", "2024-11-30", 68.00),
+        (1, "Standard Plan", "2024-12-01", "2024-12-31", 69.00),
     ]
+
+    # Customer 2 data
+    customer2_data = [
+        (2, "Eco Plan", "2024-01-01", "2024-01-31", 69.00),
+        (2, "Eco Plan", "2024-02-01", "2024-02-29", 67.00),
+        (2, "Eco Plan", "2024-03-01", "2024-03-31", 70.00),
+        (2, "Standard Plan", "2024-04-01", "2024-04-30", 50.00),
+        (2, "Standard Plan", "2024-05-01", "2024-05-31", 53.00),
+        (2, "Eco Plan", "2024-06-01", "2024-06-30", 63.00),
+        (2, "Eco Plan", "2024-07-01", "2024-07-31", 64.00),
+        (2, "Eco Plan", "2024-08-01", "2024-08-31", 65.00),
+        (2, "Eco Plan", "2024-09-01", "2024-09-30", 66.00),
+        (2, "Eco Plan", "2024-10-01", "2024-10-31", 67.00),
+        (2, "Eco Plan", "2024-11-01", "2024-11-30", 68.00),
+        (2, "Eco Plan", "2024-12-01", "2024-12-31", 69.00),
+    ]
+
+    return customer1_data + customer2_data
 
 
 def get_electricity_plans_data() -> list[tuple]:
@@ -41,6 +68,31 @@ def get_electricity_plans_data() -> list[tuple]:
             "Lower rates at night, great for electric vehicle charging, smart meter integration",
         ),
     ]
+
+
+def populate_customers(conn: sqlite3.Connection) -> None:
+    """Populate the customers table with sample data."""
+    cursor = conn.cursor()
+
+    customers = get_customers_data()
+
+    try:
+        cursor.executemany(
+            """
+        INSERT INTO customers (
+            customer_id,
+            name,
+            email)
+        VALUES (?, ?, ?)
+        """,
+            customers,
+        )
+
+        conn.commit()
+        print(f"Added {len(customers)} customers")
+    except sqlite3.Error as e:
+        conn.rollback()
+        print(f"Error populating customers: {e}")
 
 
 def populate_spending_events(conn: sqlite3.Connection) -> None:
@@ -98,5 +150,6 @@ def populate_electricity_plans(conn: sqlite3.Connection) -> None:
 
 def populate_all_tables(connection: sqlite3.Connection) -> None:
     """Populate all tables with sample data."""
+    populate_customers(conn=connection)
     populate_spending_events(conn=connection)
     populate_electricity_plans(conn=connection)
