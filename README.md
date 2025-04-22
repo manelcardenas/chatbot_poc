@@ -55,7 +55,7 @@ This project provides a simple chatbot proof of concept using LangChain and Open
 Run the application:
 
 ```
-python main.py
+python -m src.main
 ```
 
 ## Development
