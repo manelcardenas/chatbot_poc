@@ -49,7 +49,9 @@ This project provides a simple chatbot proof of concept using LangChain and Open
 
 ## Usage
 
-Run the application:
+### Terminal Interface
+
+Run the application in the terminal:
 
 ```
 uv run -m src.main
@@ -58,6 +60,20 @@ or
 ```
 python -m src.main
 ```
+
+### Streamlit UI
+
+The application also provides a web-based UI using Streamlit:
+
+```
+uv run -m src.main --ui
+```
+or
+```
+python -m src.main --ui
+```
+
+This will launch a Streamlit server and open a browser window with the chatbot interface. If the browser doesn't open automatically, go to http://localhost:8501.
 
 ## Development
 
