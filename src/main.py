@@ -8,10 +8,6 @@ from langchain_core.messages import AIMessage, HumanMessage
 
 from src.core.chatbot import ChatBot
 
-# UI options are available via Streamlit
-# To run with Streamlit UI: python -m src.main --ui
-# To run in terminal: python -m src.main
-
 if __name__ == "__main__":
     init(autoreset=True)
 
