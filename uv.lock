@@ -209,6 +209,7 @@ dependencies = [
     { name = "langchain-openai" },
     { name = "langgraph" },
     { name = "langgraph-checkpoint" },
+    { name = "logging" },
     { name = "matplotlib" },
     { name = "openai" },
     { name = "python-dotenv" },
@@ -233,6 +234,7 @@ requires-dist = [
     { name = "langchain-openai", specifier = "==0.3.12" },
     { name = "langgraph", specifier = "==0.2.69" },
     { name = "langgraph-checkpoint", specifier = ">=2.0.24" },
+    { name = "logging", specifier = ">=0.4.9.6" },
     { name = "matplotlib", specifier = "==3.10.0" },
     { name = "openai", specifier = ">=1.68.2" },
     { name = "python-dotenv", specifier = "==1.0.1" },
@@ -952,6 +954,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/3a/3f/7143f47d161951e7c
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bb/8c/5846d3896fd98670ea2f1408375e445f1315f9e250b6884df500d0906112/langsmith-0.3.33-py3-none-any.whl", hash = "sha256:6fa453942014945e1de7e283880ed3e8031b5d84e0dc75b87d101ecedb62371b", size = 358793 },
 ]
+
+[[package]]
+name = "logging"
+version = "0.4.9.6"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/93/4b/979db9e44be09f71e85c9c8cfc42f258adfb7d93ce01deed2788b2948919/logging-0.4.9.6.tar.gz", hash = "sha256:26f6b50773f085042d301085bd1bf5d9f3735704db9f37c1ce6d8b85c38f2417", size = 96029 }
 
 [[package]]
 name = "markdown-it-py"

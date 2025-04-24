@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 
 from src.db.data_generators import populate_all_tables
@@ -13,17 +14,17 @@ def populate_database() -> None:
         # Initialize database with schema
         conn = init_database(db_path=DB_NAME)
         if not conn:
-            print("Failed to initialize database")
+            logging.error("Failed to initialize database")
             return
 
         # Populate with sample data
         populate_all_tables(connection=conn)
 
-        print("Database successfully populated!")
+        logging.info("Database successfully populated!")
     except sqlite3.Error as e:
-        print(f"Database error: {e}")
+        logging.error(f"Database error: {e}")
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(f"Error: {e}")
     finally:
         if conn:
             conn.close()

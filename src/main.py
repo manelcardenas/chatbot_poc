@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import sys
 
@@ -16,8 +17,8 @@ if __name__ == "__main__":
 
     # Check if the UI flag is present
     if "--ui" in sys.argv:
-        print("Starting Streamlit UI...")
-        print("If the browser doesn't open automatically, go to http://localhost:8501")
+        logging.info("Starting Streamlit UI...")
+        logging.info("If the browser doesn't open automatically, go to http://localhost:8501")
         # Use the simple streamlit command
         os.system("streamlit run src/cli/streamlit_app.py")
     else:
@@ -25,15 +26,15 @@ if __name__ == "__main__":
         chatbot = ChatBot()
         chatbot.build_graph()
 
-        print("\n=== Welcome to the Electricity Chatbot ===\n")
-        print("You can ask about your electricity bills or get plan recommendations.")
-        print("For billing inquiries, you'll need to identify yourself with your customer ID or email.")
-        print("\nChatbot initialized. Type 'exit' to end the chat.")
+        logging.info("\n=== Welcome to the Electricity Chatbot ===\n")
+        logging.info("You can ask about your electricity bills or get plan recommendations.")
+        logging.info("For billing inquiries, you'll need to identify yourself with your customer ID or email.")
+        logging.info("\nChatbot initialized. Type 'exit' to end the chat.")
 
         while True:
             user_input = input("User: ")
             if user_input.lower() == "exit":
-                print("Chatbot session ended.")
+                logging.info("Chatbot session ended.")
                 break
 
             for s in chatbot.graph.stream(
@@ -41,8 +42,8 @@ if __name__ == "__main__":
                 config=chatbot.config,
             ):
                 if "__end__" not in s:
-                    print("-" * 50)
-                    print(Fore.LIGHTMAGENTA_EX + f"Internal graph message: {s}")
+                    logging.info("-" * 50)
+                    logging.info(Fore.LIGHTMAGENTA_EX + f"Internal graph message: {s}")
 
             # Get the checkpoint data
             checkpoint = chatbot.checkpoint_saver.get(chatbot.config)
@@ -87,11 +88,11 @@ if __name__ == "__main__":
 
             try:
                 bot_reply = chatbot.graph.get_state(config=chatbot.config).values["messages"][-1].content
-                print("\n")
-                print("-" * 50)
-                print(Fore.CYAN + f"Chatbot: {bot_reply}")
-                print("-" * 50)
-                print("\n")
+                logging.info("\n")
+                logging.info("-" * 50)
+                logging.info(Fore.CYAN + f"Chatbot: {bot_reply}")
+                logging.info("-" * 50)
+                logging.info("\n")
             except Exception as e:
-                print(f"Error getting bot reply: {e}")
-                print("Continuing conversation...")
+                logging.error(f"Error getting bot reply: {e}")
+                logging.info("Continuing conversation...")

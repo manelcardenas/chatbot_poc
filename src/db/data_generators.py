@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 
 
@@ -89,10 +90,10 @@ def populate_customers(conn: sqlite3.Connection) -> None:
         )
 
         conn.commit()
-        print(f"Added {len(customers)} customers")
+        logging.info(f"Added {len(customers)} customers")
     except sqlite3.Error as e:
         conn.rollback()
-        print(f"Error populating customers: {e}")
+        logging.error(f"Error populating customers: {e}")
 
 
 def populate_spending_events(conn: sqlite3.Connection) -> None:
@@ -116,10 +117,10 @@ def populate_spending_events(conn: sqlite3.Connection) -> None:
         )
 
         conn.commit()
-        print(f"Added {len(spending_events)} spending events")
+        logging.info(f"Added {len(spending_events)} spending events")
     except sqlite3.Error as e:
         conn.rollback()
-        print(f"Error populating spending events: {e}")
+        logging.error(f"Error populating spending events: {e}")
 
 
 def populate_electricity_plans(conn: sqlite3.Connection) -> None:
@@ -142,10 +143,10 @@ def populate_electricity_plans(conn: sqlite3.Connection) -> None:
         )
 
         conn.commit()
-        print(f"Added {len(electricity_plans)} electricity plans")
+        logging.info(f"Added {len(electricity_plans)} electricity plans")
     except sqlite3.Error as e:
         conn.rollback()
-        print(f"Error populating electricity plans: {e}")
+        logging.error(f"Error populating electricity plans: {e}")
 
 
 def populate_all_tables(connection: sqlite3.Connection) -> None:

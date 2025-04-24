@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 
 
@@ -65,5 +66,5 @@ def init_database(db_path: str) -> sqlite3.Connection:
         create_all_tables(conn=conn)
         return conn
     except sqlite3.Error as e:
-        print(f"Database initialization error: {e}")
+        logging.error(f"Database initialization error: {e}")
         raise
